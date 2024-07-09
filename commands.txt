@@ -1,0 +1,125 @@
+--- Server(nodejs) package Commands --
+npm init -y
+npm i nodemon
+npm i express
+npm i bcrypt
+npm i braintree
+npm i colors
+npm i concurrently
+npm i cors
+npm i dotenv
+npm i express-formidable
+npm i jsonwebtoken
+npm i mongoose
+npm i morgan
+npm i slugify
+
+--- Reactjs(client) package Commands --
+cmd-> npx create-react-app client
+vscode-> cd client
+npm i @fortawesome/fontawesome-svg-core
+npm i @fortawesome/free-solid-svg-icons
+npm i @fortawesome/react-fontawesome
+npm i @hookform/resolvers
+npm i antd
+npm i axios
+npm i braintree-web-drop-in-react
+npm i moment
+npm i react-helmet
+npm i react-hook-form 
+npm i react-hot-toast
+npm i react-icons
+npm i react-router-dom 
+npm i react-toastify 
+npm i yup
+npm i yup-password
+
+// warning after download of both packages
+1Q.(completed)  at start of project(in cmd) 
+WARNING in ./node_modules/yup-password/dist/index.js
+[1] Module Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1] Failed to parse source map from 'C:\Webdev-Projects\Ecommerce-MERN-Modified\client\node_modules\yup-password\src\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Webdev-Projects\Ecommerce-MERN-Modified\client\node_modules\yup-password\src\index.ts'
+Solution:-
+-use below code in file-path- node_modules/react-scripts/config/webpack.config.js 
+- and pasting this after the line performance: false,
+ignoreWarnings: [
+      // This is a Manual Edit to prevent webpack warning and it will be removed if npm install is given
+      // Ignore warnings raised by source-map-loader.
+      // some third party packages may ship miss-configured sourcemaps, that interrupts the build
+      // See: https://github.com/facebook/create-react-app/discussions/11278#discussioncomment-1780169
+      /**
+       *
+       * @param {import('webpack').WebpackError} warning
+       * @returns {boolean}
+       */
+      function ignoreSourcemapsloaderWarnings(warning) {
+        return (
+          warning.module &&
+          warning.module.resource.includes('node_modules') &&
+          warning.details &&
+          warning.details.includes('source-map-loader')
+        );
+      },
+    ],
+-when deployed we dont include node_modules,so this edit will not be there,
+but deployed-site(like render or firebse) will use there own node_modules, so warning will be prevented from there side
+
+2Q.(completed) at homepage-console 
+Warning: Layout: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.
+    at Layout (http://localhost:3000/static/js/bundle.js:1234:3)
+    at HomePage (http://localhost:3000/static/js/bundle.js:7172:82)
+    at RenderedRoute (http://localhost:3000/static/js/bundle.js:113230:5)
+    at Routes (http://localhost:3000/static/js/bundle.js:113921:5)
+    at App
+    at Router (http://localhost:3000/static/js/bundle.js:113855:15)
+    at BrowserRouter (http://localhost:3000/static/js/bundle.js:111808:5)
+    at CartProvider (http://localhost:3000/static/js/bundle.js:1985:3)
+    at SearchProvider (http://localhost:3000/static/js/bundle.js:2073:3)
+    at AuthProvider (http://localhost:3000/static/js/bundle.js:1883:3)
+Solution:-
+-use direct props-default in prop-call destructure instead of Layout.defaultProps={}
+const Layout = ({
+  children,
+  title = "ChocoStore - Shop now",
+  description = "chocolate website or mern stack project",
+  keywords = "chocolate,chocolates,product,mern,react,node,mongodb",
+  author = "Revanth Sai Velicheti",
+}) => {}
+
+
+3Q. at filter products-homepage(antd- checkout and radio buttons) and delete-category(antd- modal) and DropIn in cart-page
+Warning: findDOMNode is deprecated and will be removed in the next major release. Instead, add a ref directly to the element you want to reference. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-find-node
+    at http://localhost:3000/static/js/bundle.js:73975:32
+    at WaveEffect (http://localhost:3000/static/js/bundle.js:24875:5) (not-completed)
+Temporary-Solution:-
+-This warning occured due to use of Third-party-Packages(antd,DropIn(braintree))
+-ref solution is there in /chatgpt-code-5 but it is not working, so remove antd-components logic 
+-and add react-bootstrap components and for DropIn(braintree) use razorpay-components and package
+
+4. at cart page with cart-products (not-completed)
+BraintreeError {name: 'BraintreeError', code: 'PAYPAL_SANDBOX_ACCOUNT_NOT_LINKED', message: 'A linked PayPal Sandbox account is required to use…ls on linking your PayPal sandbox with Braintree.', type: 'MERCHANT', details: undefined}
+Temporary-solution:-
+-create new account in braintree and link with PayPal-dev-account , if not works then use razorpay-package
+
+Doubts:-
+1Q.(completed) BY using cart-%{auth.user.name} to store user-cart-products in their cart-name(key) only in LS 
+- for multiple accounts in single browser which works
+- but effects new users/guest who add cart-products before login or register then after login 
+- we can't show his initially added cart-products(when it is set as guest) after login , if we show then 
+- old users who login their cart-products will be replaced by guest-products which we can't have . so,
+- can't show guest cart-products to new registered user after login in his cart??
+Temporary solution:-
+- remove all the cart-user.name logic and just use only key- cart in LS for storing every account cart-products
+- just use original cart logic for storing or use Redux or Cookies or cartModel(DB) to store cart-products instead of LS
+-- see cart-user.name logic in AddToCart.txt in notes folder
+Solution:-
+- both multiple accounts in single browser and guest cart-products to new registered user after login works
+- works by using cart-user.name logic in AddToCart.txt
+--- works for cart-user.name but showing cart-products from one device to other devices
+
+
+2Q. Photo update is not working or like not showing after updating successfully in DB , so problem may be in 
+- photo logic , photo Direct-API call(in img tag) , AXios-calls , or delay in passing pid to get photo 
+
+3Q. Remove toast-msgs logic from all and use another package or logic to show msgs(notifications) which
+- doesnt lag or stuck when its msg duration is not fineshed 
